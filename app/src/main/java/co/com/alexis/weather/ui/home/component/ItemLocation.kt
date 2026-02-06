@@ -1,4 +1,4 @@
-package co.com.alexis.weather.ui.home
+package co.com.alexis.weather.ui.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import co.com.alexis.weather.R
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.ui.component.SpacerComponent
-import co.com.alexis.weather.ui.component.WeatherTypography
+import co.com.alexis.weather.ui.util.WeatherTypography
 
 @Composable
 fun ItemLocation(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import co.com.alexis.weather.ui.component.ErrorHandlerContext
 import co.com.alexis.weather.ui.home.HomeScreen
 import co.com.alexis.weather.ui.theme.WeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,9 +21,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherTheme {
-                HomeScreen(
-                    modifier = Modifier.padding(8.dp)
-                )
+                ErrorHandlerContext {
+                    HomeScreen(
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
         }
     }

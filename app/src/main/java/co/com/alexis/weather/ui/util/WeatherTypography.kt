@@ -1,4 +1,4 @@
-package co.com.alexis.weather.ui.component
+package co.com.alexis.weather.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
@@ -9,7 +9,7 @@ object WeatherTypography {
     val TitleMediumCard
         @Composable
         get() = TextStyle(
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Companion.Bold,
             fontSize = 18.sp
         )
 }

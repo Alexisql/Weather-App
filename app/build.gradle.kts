@@ -47,6 +47,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt)
+    implementation(libs.hilt.navigation)
     ksp(libs.hilt.compiler)
 
     //Splash

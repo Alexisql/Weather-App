@@ -1,4 +1,4 @@
-package co.com.alexis.weather.ui.component
+package co.com.alexis.weather.ui.home.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

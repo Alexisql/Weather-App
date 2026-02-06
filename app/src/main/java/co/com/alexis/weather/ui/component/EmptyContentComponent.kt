@@ -18,7 +18,7 @@ fun EmptyContentComponent() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = R.string.not_found),
+            text = stringResource(id = R.string.label_empty_list),
             modifier = Modifier
                 .padding(16.dp)
         )
