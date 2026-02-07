@@ -1,4 +1,4 @@
-package co.com.alexis.weather.data.remote.util.exception
+package co.com.alexis.weather.data.remote.util
 
 sealed class WeatherException() : Exception() {
     class NetworkException() : WeatherException() {

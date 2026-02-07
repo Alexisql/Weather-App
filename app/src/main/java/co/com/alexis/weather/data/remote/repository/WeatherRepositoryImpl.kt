@@ -3,7 +3,7 @@ package co.com.alexis.weather.data.remote.repository
 import co.com.alexis.weather.BuildConfig.API_KEY
 import co.com.alexis.weather.data.remote.dto.toDomain
 import co.com.alexis.weather.data.remote.service.WeatherService
-import co.com.alexis.weather.data.remote.util.exception.safeApiCall
+import co.com.alexis.weather.data.remote.util.safeApiCall
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.domain.repository.IWeatherRepository

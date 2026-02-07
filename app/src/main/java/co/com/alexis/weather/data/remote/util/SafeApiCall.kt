@@ -1,4 +1,4 @@
-package co.com.alexis.weather.data.remote.util.exception
+package co.com.alexis.weather.data.remote.util
 
 import android.util.Log
 import retrofit2.HttpException

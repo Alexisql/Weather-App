@@ -54,12 +54,10 @@ fun ItemForecast(
             ) {
                 Text(
                     text = "${forecast.day.tempMin.toInt()}$GRADE/ ${forecast.day.tempMax.toInt()}$GRADE",
-                    fontWeight = FontWeight.Companion.Bold,
                     fontSize = 30.sp
                 )
                 Text(
                     text = forecast.day.condition.text,
-                    style = WeatherTypography.TitleMediumCard
                 )
             }
             LoadImageAsyncComponent(url = forecast.day.condition.icon)

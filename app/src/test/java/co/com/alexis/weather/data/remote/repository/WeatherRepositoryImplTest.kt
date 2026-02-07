@@ -3,7 +3,7 @@ package co.com.alexis.weather.data.remote.repository
 import co.com.alexis.weather.MainDispatcherRule
 import co.com.alexis.weather.data.remote.dto.LocationDto
 import co.com.alexis.weather.data.remote.service.WeatherService
-import co.com.alexis.weather.data.remote.util.exception.WeatherException
+import co.com.alexis.weather.data.remote.util.WeatherException
 import co.com.alexis.weather.domain.repository.IWeatherRepository
 import io.mockk.coEvery
 import io.mockk.mockk
