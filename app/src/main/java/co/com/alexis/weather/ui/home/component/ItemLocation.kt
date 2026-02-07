@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import co.com.alexis.weather.R
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.ui.component.SpacerComponent
@@ -59,10 +60,6 @@ fun ItemLocation(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(R.string.label_location),
-                            style = WeatherTypography.TitleMediumCard
-                        )
                         SpacerComponent(10)
                         Text(
                             text = location.name,
@@ -75,10 +72,6 @@ fun ItemLocation(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(R.string.label_country),
-                            style = WeatherTypography.TitleMediumCard
-                        )
                         SpacerComponent(10)
                         Text(
                             text = location.country,
