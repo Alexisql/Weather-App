@@ -12,16 +12,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.com.alexis.weather.R
-import co.com.alexis.weather.domain.model.Condition
-import co.com.alexis.weather.domain.model.Current
-import co.com.alexis.weather.domain.model.Forecast
-import co.com.alexis.weather.domain.model.Location
-import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.ui.component.ErrorDialog
 import co.com.alexis.weather.ui.component.LocalErrorHandler
 import co.com.alexis.weather.ui.component.TopAppBarComponent
@@ -101,7 +95,7 @@ private fun WeatherDetailContent(
         ) {
             when (state) {
                 is WeatherDetailUiState.Loading -> {
-                    WeatherDetailSkeleton(modifier = Modifier.padding(8.dp))
+                    WeatherDetailSkeleton()
                 }
 
                 is WeatherDetailUiState.Success -> {
@@ -121,20 +115,7 @@ private fun WeatherDetailContent(
 @Composable
 private fun WeatherDetailContentPreview() {
     WeatherDetailContent(
-        state = WeatherDetailUiState.Success(
-            weather = Weather(
-                location = Location("Bogota", "", ""),
-                current = Current(
-                    condition = Condition("", "Lluvioso"),
-                    humidity = 0,
-                    temp = 22.0,
-                    wind = 0.0
-                ),
-                forecast = Forecast(
-                    listOf()
-                )
-            )
-        ),
+        state = WeatherDetailUiState.Loading,
         onIntent = {}
     )
 }

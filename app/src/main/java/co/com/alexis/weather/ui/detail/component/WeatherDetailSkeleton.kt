@@ -32,7 +32,7 @@ fun WeatherDetailSkeleton(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 50.dp, horizontal = 32.dp),
+                .padding(bottom = 20.dp, start = 32.dp, end = 32.dp),
             horizontalArrangement = Arrangement.Absolute.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
