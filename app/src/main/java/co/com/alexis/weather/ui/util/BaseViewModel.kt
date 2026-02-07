@@ -1,4 +1,4 @@
-package co.com.alexis.weather.ui.util.viewmodel
+package co.com.alexis.weather.ui.util
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.BufferOverflow

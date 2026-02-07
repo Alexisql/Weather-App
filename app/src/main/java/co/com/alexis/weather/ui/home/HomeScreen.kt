@@ -25,8 +25,9 @@ import co.com.alexis.weather.ui.home.component.ItemLocation
 import co.com.alexis.weather.ui.home.component.SearchComponent
 import co.com.alexis.weather.ui.home.contract.HomeEffect
 import co.com.alexis.weather.ui.home.contract.HomeIntent
-import co.com.alexis.weather.ui.home.contract.HomeUiState
+import co.com.alexis.weather.ui.home.contract.HomeIntent.OnLocationSelected
 import co.com.alexis.weather.ui.navigation.route.Route
+import co.com.alexis.weather.ui.util.ResultState
 
 @Composable
 fun HomeScreen(
@@ -35,7 +36,6 @@ fun HomeScreen(
 ) {
     val state by homeViewModel.uiState.collectAsStateWithLifecycle()
     val query by homeViewModel.searchQuery.collectAsStateWithLifecycle()
-    val locations = homeViewModel.locations.collectAsStateWithLifecycle()
     val errorHandler = LocalErrorHandler.current
 
     LaunchedEffect(Unit) {
@@ -55,7 +55,6 @@ fun HomeScreen(
     HomeContent(
         state = state,
         query = query,
-        locations = locations.value,
         onIntent = { intent ->
             homeViewModel.onIntent(intent)
         }
@@ -64,9 +63,8 @@ fun HomeScreen(
 
 @Composable
 private fun HomeContent(
-    state: HomeUiState,
+    state: ResultState<List<Location>>,
     query: String,
-    locations: List<Location>,
     onIntent: (HomeIntent) -> Unit
 ) {
     Scaffold(
@@ -82,24 +80,33 @@ private fun HomeContent(
                 onQueryChange = { onIntent(HomeIntent.OnSearch(it)) }
             )
 
-            if (state.loading) {
-                HomeSkeleton(modifier = Modifier.padding(top = 16.dp))
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    items(locations) { item ->
-                        SpacerComponent(10)
-                        ItemLocation(
-                            location = item,
-                            onItemSelected = { onIntent(HomeIntent.OnLocationSelected(item.name)) }
-                        )
-                    }
-                    if (locations.isEmpty()) {
-                        item {
-                            EmptyContentComponent()
+            when (state) {
+                is ResultState.Loading -> {
+                    HomeSkeleton(modifier = Modifier.padding(top = 16.dp))
+                }
+
+                is ResultState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        val locations = state.data
+                        items(locations) { item ->
+                            SpacerComponent(10)
+                            ItemLocation(
+                                location = item,
+                                onItemSelected = { onIntent(OnLocationSelected(item.name)) }
+                            )
+                        }
+                        if (locations.isEmpty()) {
+                            item {
+                                EmptyContentComponent()
+                            }
                         }
                     }
+                }
+
+                else -> {
+                    Unit
                 }
             }
         }
@@ -110,9 +117,8 @@ private fun HomeContent(
 @Composable
 private fun HomeContentPreview() {
     HomeContent(
-        state = HomeUiState(),
+        state = ResultState.Idle,
         query = "",
-        locations = listOf(),
         onIntent = {}
     )
 }

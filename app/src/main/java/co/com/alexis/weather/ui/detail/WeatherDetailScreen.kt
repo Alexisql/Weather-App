@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.com.alexis.weather.R
+import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.ui.component.ErrorDialog
 import co.com.alexis.weather.ui.component.LocalErrorHandler
 import co.com.alexis.weather.ui.component.TopAppBarComponent
@@ -23,7 +24,7 @@ import co.com.alexis.weather.ui.detail.component.WeatherDetailSkeleton
 import co.com.alexis.weather.ui.detail.component.WeatherDetailSuccess
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailEffect
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailIntent
-import co.com.alexis.weather.ui.detail.contract.WeatherDetailUiState
+import co.com.alexis.weather.ui.util.ResultState
 
 @Composable
 fun WeatherDetailScreen(
@@ -73,7 +74,7 @@ fun WeatherDetailScreen(
 
 @Composable
 private fun WeatherDetailContent(
-    state: WeatherDetailUiState,
+    state: ResultState<Weather>,
     title: String = "",
     onIntent: (WeatherDetailIntent) -> Unit
 ) {
@@ -95,13 +96,14 @@ private fun WeatherDetailContent(
                 .padding(paddingValues),
         ) {
             when (state) {
-                is WeatherDetailUiState.Loading -> {
+                is ResultState.Loading -> {
                     WeatherDetailSkeleton()
                 }
 
-                is WeatherDetailUiState.Success -> {
-                    onIntent(WeatherDetailIntent.OnChangeTitle(state.weather.location.name))
-                    WeatherDetailSuccess(weather = state.weather)
+                is ResultState.Success -> {
+                    val weather = state.data
+                    onIntent(WeatherDetailIntent.OnChangeTitle(weather.location.name))
+                    WeatherDetailSuccess(weather = weather)
                 }
 
                 else -> {
@@ -116,7 +118,7 @@ private fun WeatherDetailContent(
 @Composable
 private fun WeatherDetailContentPreview() {
     WeatherDetailContent(
-        state = WeatherDetailUiState.Loading,
+        state = ResultState.Loading,
         onIntent = {}
     )
 }

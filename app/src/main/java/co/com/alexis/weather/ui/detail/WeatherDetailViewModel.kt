@@ -1,11 +1,12 @@
 package co.com.alexis.weather.ui.detail
 
 import androidx.lifecycle.viewModelScope
+import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.domain.repository.IWeatherRepository
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailEffect
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailIntent
-import co.com.alexis.weather.ui.detail.contract.WeatherDetailUiState
-import co.com.alexis.weather.ui.util.viewmodel.BaseViewModel
+import co.com.alexis.weather.ui.util.BaseViewModel
+import co.com.alexis.weather.ui.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,18 +14,18 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherDetailViewModel @Inject constructor(
     private val weatherRepository: IWeatherRepository
-) : BaseViewModel<WeatherDetailUiState, WeatherDetailEffect>(WeatherDetailUiState.Idle) {
+) : BaseViewModel<ResultState<Weather>, WeatherDetailEffect>(ResultState.Idle) {
 
     fun getWeather(location: String, numberDays: Int) {
-        updateState { WeatherDetailUiState.Loading }
+        updateState { ResultState.Loading }
         viewModelScope.launch {
             val response = weatherRepository.getWeather(location, numberDays)
             response
                 .onSuccess { weather ->
-                    updateState { WeatherDetailUiState.Success(weather) }
+                    updateState { ResultState.Success(weather) }
                 }
                 .onFailure {
-                    updateState { WeatherDetailUiState.Idle }
+                    updateState { ResultState.Idle }
                     emitEffect(WeatherDetailEffect.ShowError(it.message ?: "Error"))
                 }
         }
