@@ -40,6 +40,7 @@ fun WeatherDetailScreen(
             when (effect) {
                 is WeatherDetailEffect.ShowError -> {
                     errorHandler.showError(ErrorDialog(effect.message))
+                    navController.popBackStack()
                 }
 
                 WeatherDetailEffect.OnBack -> {

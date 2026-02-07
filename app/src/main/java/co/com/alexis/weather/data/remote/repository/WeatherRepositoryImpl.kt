@@ -16,14 +16,14 @@ class WeatherRepositoryImpl @Inject constructor(
     private val dispatcherIO: CoroutineDispatcher
 ) : IWeatherRepository {
 
-    override suspend fun getLocations(query: String): List<Location> {
+    override suspend fun getLocations(query: String): Result<List<Location>> {
         return try {
             withContext(dispatcherIO) {
                 val response = weatherService.getLocations(API_KEY, query)
-                response.map { it.toDomain() }
+                Result.success(response.map { it.toDomain() })
             }
         } catch (exception: IOException) {
-            throw Exception(exception)
+            Result.failure(exception)
         }
     }
 
@@ -35,7 +35,6 @@ class WeatherRepositoryImpl @Inject constructor(
             }
         } catch (exception: IOException) {
             Result.failure(exception)
-
         }
     }
 }

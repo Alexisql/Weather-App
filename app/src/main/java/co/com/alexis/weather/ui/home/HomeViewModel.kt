@@ -8,11 +8,11 @@ import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.home.contract.HomeUiState
 import co.com.alexis.weather.ui.util.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,21 +36,7 @@ class HomeViewModel @Inject constructor(
             .debounce(400)
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                flow {
-                    if (query.isBlank()) {
-                        emit(emptyList())
-                    } else {
-                        emit(weatherRepository.getLocations(query))
-                    }
-                }
-                    .onStart { updateState { it.copy(loading = true) } }
-                    .catch { exception ->
-                        if (exception !is CancellationException) {
-                            updateState { state -> state.copy(loading = false) }
-                            emit(emptyList())
-                            emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
-                        }
-                    }
+                getLocations(query)
             }
             .onEach {
                 updateState { it.copy(loading = false) }
@@ -63,6 +49,24 @@ class HomeViewModel @Inject constructor(
 
     private fun searchLocation(location: String) {
         _searchQuery.value = location
+    }
+
+    private fun getLocations(location: String): Flow<List<Location>> {
+        return flow {
+            if (location.isBlank()) {
+                emit(emptyList())
+            } else {
+                weatherRepository.getLocations(location)
+                    .onSuccess { response ->
+                        emit(response)
+                    }.onFailure { exception ->
+                        if (exception !is CancellationException) {
+                            emit(emptyList())
+                            emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
+                        }
+                    }
+            }
+        }.onStart { updateState { it.copy(loading = true) } }
     }
 
     fun onIntent(intent: HomeIntent) {
