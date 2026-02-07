@@ -6,7 +6,6 @@ import co.com.alexis.weather.data.remote.dto.WeatherDto
 import co.com.alexis.weather.data.remote.service.WeatherService
 import co.com.alexis.weather.domain.repository.IWeatherRepository
 import io.mockk.coEvery
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
