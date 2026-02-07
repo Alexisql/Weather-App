@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,10 +18,10 @@ import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.ui.component.EmptyContentComponent
 import co.com.alexis.weather.ui.component.ErrorDialog
 import co.com.alexis.weather.ui.component.LocalErrorHandler
-import co.com.alexis.weather.ui.home.component.SearchComponent
 import co.com.alexis.weather.ui.component.SpacerComponent
 import co.com.alexis.weather.ui.home.component.HomeSkeleton
 import co.com.alexis.weather.ui.home.component.ItemLocation
+import co.com.alexis.weather.ui.home.component.SearchComponent
 import co.com.alexis.weather.ui.home.contract.HomeEffect
 import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.home.contract.HomeUiState
@@ -91,13 +92,10 @@ private fun HomeContent(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    items(
-                        count = locations.size
-                    ) { index ->
-                        val location = locations[index]
+                    items(locations) { item ->
                         SpacerComponent(10)
                         ItemLocation(
-                            location = location,
+                            location = item,
                             onItemSelected = { }
                         )
                     }

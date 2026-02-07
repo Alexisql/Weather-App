@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
@@ -35,20 +37,23 @@ class HomeViewModel @Inject constructor(
             .distinctUntilChanged()
             .flatMapLatest { query ->
                 flow {
-                    updateState { it.copy(loading = true) }
                     if (query.isBlank()) {
                         emit(emptyList())
                     } else {
                         emit(weatherRepository.getLocations(query))
                     }
-                    updateState { state -> state.copy(loading = false) }
-                }.catch { exception ->
-                    if (exception !is CancellationException) {
-                        updateState { state -> state.copy(loading = false) }
-                        emit(emptyList())
-                        emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
-                    }
                 }
+                    .onStart { updateState { it.copy(loading = true) } }
+                    .catch { exception ->
+                        if (exception !is CancellationException) {
+                            updateState { state -> state.copy(loading = false) }
+                            emit(emptyList())
+                            emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
+                        }
+                    }
+            }
+            .onEach {
+                updateState { it.copy(loading = false) }
             }
             .stateIn(
                 scope = viewModelScope,

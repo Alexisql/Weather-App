@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 
 /**
  * BaseViewModel.
- * @param S Representa el Estado de la UI (User Interface State)
+ * @param S Representa el Estado de la UI
  * @param E Representa Efectos de un solo disparo (Navegación, Toasts, Error, etc.)
  */
 abstract class BaseViewModel<S : Any, E : Any>(initialState: S) : ViewModel() {
@@ -43,8 +43,4 @@ abstract class BaseViewModel<S : Any, E : Any>(initialState: S) : ViewModel() {
         _effects.tryEmit(effect)
     }
 
-    /**
-     * Obtiene el valor actual del estado.
-     */
-    protected val currentState: S get() = uiState.value
 }
