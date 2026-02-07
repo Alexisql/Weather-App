@@ -24,6 +24,7 @@ import co.com.alexis.weather.domain.model.Condition
 import co.com.alexis.weather.domain.model.Day
 import co.com.alexis.weather.domain.model.ForecastDay
 import co.com.alexis.weather.ui.util.WeatherTypography
+import co.com.alexis.weather.ui.util.toDayName
 
 private const val GRADE = "°"
 
@@ -42,7 +43,7 @@ fun ItemForecast(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            text = forecast.date,
+            text = forecast.date.toDayName(),
             style = WeatherTypography.TitleMediumCard
         )
         Row(
