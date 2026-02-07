@@ -1,23 +1,26 @@
 package co.com.alexis.weather.data.remote.repository
 
+import co.com.alexis.weather.BuildConfig.API_KEY
+import co.com.alexis.weather.data.remote.dto.toDomain
+import co.com.alexis.weather.data.remote.service.WeatherService
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.domain.repository.IWeatherRepository
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
+    private val weatherService: WeatherService,
+    private val dispatcherIO: CoroutineDispatcher
 ) : IWeatherRepository {
 
     override suspend fun getLocations(query: String): List<Location> {
         return try {
-            delay(2000)
-            listOf(
-                Location("Cucuta", "Norte de Santander", "Colombia"),
-                Location("Los Patios", "Norte de Santander", "Colombia"),
-                Location("Villa del Rosario", "Norte de Santander", "Colombia"),
-                Location("Zulia", "Norte de Santander", "Colombia")
-            )
+            withContext(dispatcherIO) {
+                val response = weatherService.getLocations(API_KEY, query)
+                response.map { it.toDomain() }
+            }
         } catch (exception: IOException) {
             throw Exception(exception)
         }

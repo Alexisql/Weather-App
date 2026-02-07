@@ -1,9 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -23,12 +32,20 @@ android {
     }
 
     buildTypes {
+        val apiKey = localProperties.getProperty("WEATHER_API_KEY") ?: ""
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://api.weatherapi.com/\"")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        }
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.weatherapi.com/\"")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
     }
     compileOptions {
@@ -40,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -52,6 +70,14 @@ dependencies {
 
     //Splash
     implementation(libs.splash)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+
+    //Serialization
+    implementation(libs.serialization)
+    implementation(libs.serialization.conver)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
