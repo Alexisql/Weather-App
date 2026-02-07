@@ -2,18 +2,19 @@ package co.com.alexis.weather.data.remote.repository
 
 import co.com.alexis.weather.MainDispatcherRule
 import co.com.alexis.weather.data.remote.dto.LocationDto
-import co.com.alexis.weather.data.remote.dto.WeatherDto
 import co.com.alexis.weather.data.remote.service.WeatherService
+import co.com.alexis.weather.data.remote.util.exception.WeatherException
 import co.com.alexis.weather.domain.repository.IWeatherRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import okio.IOException
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
+import retrofit2.HttpException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WeatherRepositoryImplTest {
@@ -53,15 +54,14 @@ class WeatherRepositoryImplTest {
     fun `getLocations should throw exception when service call fails`() = runTest {
         // Given
         val query = "Bogota"
-        val exception = IOException("404 Not Found")
-        coEvery { weatherService.getLocations(any(), query) } throws exception
+        coEvery { weatherService.getLocations(any(), query) } throws IOException()
 
         // When
         val result = repository.getLocations(query)
 
         // Then
         Assert.assertTrue(result.isFailure)
-        Assert.assertEquals(exception, result.exceptionOrNull())
+        Assert.assertTrue(result.exceptionOrNull() is WeatherException.NetworkException)
     }
 
     @Test
@@ -69,8 +69,9 @@ class WeatherRepositoryImplTest {
         // Given
         val location = "Bogota"
         val days = 3
-        val mockWeatherDto = mockk<WeatherDto>(relaxed = true)
-        coEvery { weatherService.getWeather(any(), location, days) } returns mockWeatherDto
+        coEvery {
+            weatherService.getWeather(any(), location, days)
+        } returns mockk(relaxed = true)
 
         // When
         val result = repository.getWeather(location, days)
@@ -84,14 +85,15 @@ class WeatherRepositoryImplTest {
         // Given
         val location = "Bogota"
         val days = 3
-        val exception = IOException("404 Not Found")
-        coEvery { weatherService.getWeather(any(), location, days) } throws exception
+        coEvery {
+            weatherService.getWeather(any(), location, days)
+        } throws HttpException(mockk(relaxed = true))
 
         // When
         val result = repository.getWeather(location, days)
 
         // Then
         Assert.assertTrue(result.isFailure)
-        Assert.assertEquals(exception, result.exceptionOrNull())
+        Assert.assertTrue(result.exceptionOrNull() is WeatherException.ServiceException)
     }
 }
