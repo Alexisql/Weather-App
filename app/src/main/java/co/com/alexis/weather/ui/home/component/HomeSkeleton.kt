@@ -24,43 +24,41 @@ import co.com.alexis.weather.ui.component.SkeletonComponent
 fun HomeSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column {
-            (0..3).forEach { _ ->
-                Card(
+        (0..3).forEach { _ ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                border = BorderStroke(1.dp, Color.LightGray),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.Transparent
+                )
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    border = BorderStroke(1.dp, Color.LightGray),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Transparent
-                    )
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Row(
+
+                    SkeletonComponent(
+                        width = 50.dp,
+                        height = 50.dp,
+                        shape = CircleShape
+                    )
+                    SkeletonComponent(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-
-                        SkeletonComponent(
-                            width = 50.dp,
-                            height = 50.dp,
-                            shape = CircleShape
-                        )
-                        SkeletonComponent(
-                            modifier = Modifier
-                                .weight(1f),
-                            height = 50.dp
-                        )
-                    }
+                            .weight(1f),
+                        height = 50.dp
+                    )
                 }
-
-                Spacer(Modifier.height(16.dp))
             }
+
+            Spacer(Modifier.height(16.dp))
         }
     }
 }

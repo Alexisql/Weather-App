@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,14 +26,18 @@ import co.com.alexis.weather.ui.util.WeatherTypography
 
 @Composable
 fun ItemLocation(
+    modifier: Modifier = Modifier,
     location: Location,
     onItemSelected: (Location) -> Unit,
 ) {
     Card(
-        modifier = Modifier.clickable {
-            onItemSelected(location)
-        },
-        shape = RoundedCornerShape(10.dp)
+        modifier = modifier
+            .padding(vertical = 4.dp, horizontal = 16.dp)
+            .clickable {
+                onItemSelected(location)
+            },
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
             modifier = Modifier

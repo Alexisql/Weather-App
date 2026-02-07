@@ -3,6 +3,7 @@ package co.com.alexis.weather.ui.home.component
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -21,6 +22,7 @@ import co.com.alexis.weather.R
 
 @Composable
 fun SearchComponent(
+    modifier: Modifier = Modifier,
     query: String,
     onQueryChange: (String) -> Unit
 ) {
@@ -30,8 +32,9 @@ fun SearchComponent(
         },
         value = query,
         onValueChange = { onQueryChange(it) },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .padding(12.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFCCCCCC),
@@ -65,5 +68,5 @@ fun SearchComponent(
 @Preview(showBackground = true)
 @Composable
 private fun SearchComponentPreview() {
-    SearchComponent("") { }
+    SearchComponent(query = "") { }
 }

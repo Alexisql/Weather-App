@@ -70,6 +70,10 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.OnSearch -> {
                 searchLocation(intent.query)
             }
+
+            is HomeIntent.OnLocationSelected -> {
+                emitEffect(HomeEffect.NavigateToDetail(intent.location))
+            }
         }
     }
 

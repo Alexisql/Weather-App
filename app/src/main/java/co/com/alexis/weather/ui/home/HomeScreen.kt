@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.ui.component.EmptyContentComponent
 import co.com.alexis.weather.ui.component.ErrorDialog
@@ -25,11 +26,12 @@ import co.com.alexis.weather.ui.home.component.SearchComponent
 import co.com.alexis.weather.ui.home.contract.HomeEffect
 import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.home.contract.HomeUiState
+import co.com.alexis.weather.ui.navigation.route.Route
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val state by homeViewModel.uiState.collectAsStateWithLifecycle()
     val query by homeViewModel.searchQuery.collectAsStateWithLifecycle()
@@ -43,41 +45,35 @@ fun HomeScreen(
                     errorHandler.showError(ErrorDialog(effect.message))
                 }
 
-                HomeEffect.NavigateToDetail -> {
-
+                is HomeEffect.NavigateToDetail -> {
+                    navController.navigate(Route.WeatherDetail.createRoute(effect.location))
                 }
             }
         }
     }
 
     HomeContent(
-        modifier = modifier,
         state = state,
         query = query,
         locations = locations.value,
         onIntent = { intent ->
-            when (intent) {
-                is HomeIntent.OnSearch -> {
-                    homeViewModel.onIntent(intent)
-                }
-            }
+            homeViewModel.onIntent(intent)
         }
     )
 }
 
 @Composable
 private fun HomeContent(
-    modifier: Modifier = Modifier,
     state: HomeUiState,
     query: String,
     locations: List<Location>,
     onIntent: (HomeIntent) -> Unit
 ) {
     Scaffold(
-        modifier = modifier
+        modifier = Modifier
     ) { paddingValues ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
@@ -96,7 +92,7 @@ private fun HomeContent(
                         SpacerComponent(10)
                         ItemLocation(
                             location = item,
-                            onItemSelected = { }
+                            onItemSelected = { onIntent(HomeIntent.OnLocationSelected(item.name)) }
                         )
                     }
                     if (locations.isEmpty()) {

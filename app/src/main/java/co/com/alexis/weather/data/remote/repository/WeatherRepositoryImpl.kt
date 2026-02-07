@@ -4,6 +4,7 @@ import co.com.alexis.weather.BuildConfig.API_KEY
 import co.com.alexis.weather.data.remote.dto.toDomain
 import co.com.alexis.weather.data.remote.service.WeatherService
 import co.com.alexis.weather.domain.model.Location
+import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.domain.repository.IWeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -23,6 +24,18 @@ class WeatherRepositoryImpl @Inject constructor(
             }
         } catch (exception: IOException) {
             throw Exception(exception)
+        }
+    }
+
+    override suspend fun getWeather(location: String, numberDays: Int): Result<Weather> {
+        return try {
+            withContext(dispatcherIO) {
+                val response = weatherService.getWeather(API_KEY, location, numberDays)
+                Result.success(response.toDomain())
+            }
+        } catch (exception: IOException) {
+            Result.failure(exception)
+
         }
     }
 }
