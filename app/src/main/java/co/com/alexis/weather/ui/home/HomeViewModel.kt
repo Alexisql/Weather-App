@@ -8,21 +8,20 @@ import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.util.BaseViewModel
 import co.com.alexis.weather.ui.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -32,23 +31,18 @@ class HomeViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val homeState: StateFlow<ResultState<List<Location>>> =
+    init {
+        observer()
+    }
+
+    private fun observer() {
         _searchQuery
             .debounce(400)
             .distinctUntilChanged()
-            .flatMapLatest { query ->
-                searchLocations(query)
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = ResultState.Idle
-            )
-
-    init {
-        homeState
+            .flatMapLatest { query -> searchLocations(query) }
+            .flowOn(Dispatchers.IO)
             .onEach { state -> updateState { state } }
-            .launchIn(viewModelScope)
+            .launchIn(scope = viewModelScope)
     }
 
     private fun searchLocations(query: String): Flow<ResultState<List<Location>>> =
@@ -61,10 +55,8 @@ class HomeViewModel @Inject constructor(
                         emit(ResultState.Success(locations))
                     }
                     .onFailure { exception ->
-                        if (exception !is CancellationException) {
-                            emit(ResultState.Idle)
-                            emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
-                        }
+                        emit(ResultState.Idle)
+                        emitEffect(HomeEffect.ShowError(exception.message ?: "Error"))
                     }
             }
         }.onStart {
@@ -78,9 +70,7 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeIntent.OnLocationSelected -> {
-                emitEffect(
-                    HomeEffect.NavigateToDetail(intent.location)
-                )
+                emitEffect(HomeEffect.NavigateToDetail(intent.location))
             }
         }
     }

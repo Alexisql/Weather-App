@@ -23,7 +23,6 @@ abstract class BaseViewModel<S : Any, E : Any>(initialState: S) : ViewModel() {
 
     // Manejo de Efectos (Actions/Events)
     private val _effects = MutableSharedFlow<E>(
-        replay = 0,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
