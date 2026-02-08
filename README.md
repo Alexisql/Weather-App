@@ -13,6 +13,7 @@ Visualizar el clima actual de una ubicación dada, usando la API de WeatherApi.
 - Clean Architecture
 - Arquitectura **MVVM/MVI**.
 - Principios **SOLID**
+- CI (Github Actions)
 - Corrutinas
 - StateFlow
 - Retrofit
