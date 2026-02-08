@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import co.com.alexis.weather.R
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.ui.component.SpacerComponent
-import co.com.alexis.weather.ui.util.WeatherTypography
+import co.com.alexis.weather.ui.theme.Typography
 
 @Composable
 fun ItemLocation(
@@ -61,7 +61,7 @@ fun ItemLocation(
                         SpacerComponent(10)
                         Text(
                             text = location.name,
-                            style = WeatherTypography.TitleMediumCard,
+                            style = Typography.titleMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -73,7 +73,7 @@ fun ItemLocation(
                         SpacerComponent(10)
                         Text(
                             text = location.country,
-                            style = WeatherTypography.TitleMediumCard,
+                            style = Typography.titleMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

@@ -25,7 +25,7 @@ import co.com.alexis.weather.domain.model.ForecastDay
 import co.com.alexis.weather.domain.model.Location
 import co.com.alexis.weather.domain.model.Weather
 import co.com.alexis.weather.ui.component.LoadImageAsyncComponent
-import co.com.alexis.weather.ui.util.WeatherTypography
+import co.com.alexis.weather.ui.theme.Typography
 
 private const val CENTIGRADE = "°C"
 
@@ -55,7 +55,7 @@ fun WeatherDetailSuccess(
                 )
                 Text(
                     text = weather.current.condition.text,
-                    style = WeatherTypography.TitleMediumCard
+                    style = Typography.titleMedium
                 )
             }
             LoadImageAsyncComponent(url = weather.current.condition.icon)

@@ -1,5 +1,6 @@
 package co.com.alexis.weather.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import co.com.alexis.weather.ui.detail.component.WeatherDetailSkeleton
 import co.com.alexis.weather.ui.detail.component.WeatherDetailSuccess
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailEffect
 import co.com.alexis.weather.ui.detail.contract.WeatherDetailIntent
+import co.com.alexis.weather.ui.theme.WeatherGradients
 import co.com.alexis.weather.ui.util.ResultState
 
 @Composable
@@ -93,6 +95,7 @@ private fun WeatherDetailContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(WeatherGradients.MainBackground)
                 .padding(paddingValues),
         ) {
             when (state) {

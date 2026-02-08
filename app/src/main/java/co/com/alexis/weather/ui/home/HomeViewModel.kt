@@ -8,7 +8,6 @@ import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.util.BaseViewModel
 import co.com.alexis.weather.ui.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -40,7 +38,6 @@ class HomeViewModel @Inject constructor(
             .debounce(400)
             .distinctUntilChanged()
             .flatMapLatest { query -> searchLocations(query) }
-            .flowOn(Dispatchers.IO)
             .onEach { state -> updateState { state } }
             .launchIn(scope = viewModelScope)
     }

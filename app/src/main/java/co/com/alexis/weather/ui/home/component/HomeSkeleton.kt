@@ -46,14 +46,14 @@ fun HomeSkeleton(modifier: Modifier = Modifier) {
                 ) {
 
                     SkeletonComponent(
-                        width = 50.dp,
-                        height = 50.dp,
+                        width = 60.dp,
+                        height = 60.dp,
                         shape = CircleShape
                     )
                     SkeletonComponent(
                         modifier = Modifier
                             .weight(1f),
-                        height = 50.dp
+                        height = 70.dp
                     )
                 }
             }

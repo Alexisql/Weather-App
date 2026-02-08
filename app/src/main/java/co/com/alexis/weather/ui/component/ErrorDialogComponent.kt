@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import co.com.alexis.weather.ui.util.WeatherTypography
+import co.com.alexis.weather.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +35,7 @@ fun ErrorDialogComponent(
                 error.title?.let {
                     Text(
                         text = it,
-                        style = WeatherTypography.TitleMediumCard,
+                        style = Typography.titleMedium,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
