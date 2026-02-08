@@ -1,6 +1,5 @@
 package co.com.alexis.weather.ui.detail.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,7 +18,7 @@ import co.com.alexis.weather.domain.model.Condition
 import co.com.alexis.weather.domain.model.Day
 import co.com.alexis.weather.domain.model.ForecastDay
 import co.com.alexis.weather.ui.component.LoadImageAsyncComponent
-import co.com.alexis.weather.ui.util.WeatherTypography
+import co.com.alexis.weather.ui.theme.Typography
 import co.com.alexis.weather.ui.util.toDayName
 
 private const val GRADE = "°"
@@ -39,17 +37,19 @@ fun ItemForecast(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp),
+                .padding(16.dp),
             text = forecast.date.toDayName(),
-            style = WeatherTypography.TitleMediumCard
+            style = Typography.titleMedium
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Absolute.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -57,10 +57,13 @@ fun ItemForecast(
                     fontSize = 30.sp
                 )
                 Text(
-                    text = forecast.day.condition.text,
+                    text = forecast.day.condition.text
                 )
             }
-            LoadImageAsyncComponent(url = forecast.day.condition.icon)
+            LoadImageAsyncComponent(
+                modifier = Modifier.weight(1f),
+                url = forecast.day.condition.icon
+            )
         }
     }
 }

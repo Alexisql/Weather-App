@@ -71,7 +71,7 @@ fun WeatherDetailSkeleton(modifier: Modifier = Modifier) {
                         SkeletonComponent(
                             modifier = Modifier
                                 .weight(1f),
-                            height = 70.dp
+                            height = 90.dp
                         )
                         SkeletonComponent(
                             width = 55.dp,

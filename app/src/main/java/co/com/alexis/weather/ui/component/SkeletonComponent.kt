@@ -38,6 +38,7 @@ fun SkeletonComponent(
             )
             .padding(paddingValues = paddingValues)
             .clip(shape = shape)
+            .background(Color.White)
             .shimmerEffect()
     )
 }

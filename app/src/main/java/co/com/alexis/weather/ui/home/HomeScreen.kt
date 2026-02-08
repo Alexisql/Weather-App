@@ -1,5 +1,6 @@
 package co.com.alexis.weather.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import co.com.alexis.weather.ui.home.contract.HomeEffect
 import co.com.alexis.weather.ui.home.contract.HomeIntent
 import co.com.alexis.weather.ui.home.contract.HomeIntent.OnLocationSelected
 import co.com.alexis.weather.ui.navigation.route.Route
+import co.com.alexis.weather.ui.theme.WeatherGradients
 import co.com.alexis.weather.ui.util.ResultState
 
 @Composable
@@ -73,6 +75,7 @@ private fun HomeContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(WeatherGradients.MainBackground)
                 .padding(paddingValues),
         ) {
             SearchComponent(
