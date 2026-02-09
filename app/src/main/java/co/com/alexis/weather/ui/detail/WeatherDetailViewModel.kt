@@ -32,13 +32,15 @@ class WeatherDetailViewModel @Inject constructor(
     }
 
     fun onIntent(intent: WeatherDetailIntent) {
-        when (intent) {
-            WeatherDetailIntent.OnBack -> {
-                emitEffect(WeatherDetailEffect.OnBack)
-            }
+        viewModelScope.launch {
+            when (intent) {
+                WeatherDetailIntent.OnBack -> {
+                    emitEffect(WeatherDetailEffect.OnBack)
+                }
 
-            else -> {
-                Unit
+                else -> {
+                    Unit
+                }
             }
         }
     }

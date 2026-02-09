@@ -38,8 +38,8 @@ abstract class BaseViewModel<S : Any, E : Any>(initialState: S) : ViewModel() {
     /**
      * Lanza un efecto que será procesado una sola vez por el colector.
      */
-    protected fun emitEffect(effect: E) {
-        _effects.tryEmit(effect)
+    protected suspend fun emitEffect(effect: E) {
+        _effects.emit(effect)
     }
 
 }
