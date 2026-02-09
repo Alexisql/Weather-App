@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,13 +62,15 @@ class HomeViewModel @Inject constructor(
         }
 
     fun onIntent(intent: HomeIntent) {
-        when (intent) {
-            is HomeIntent.OnSearch -> {
-                _searchQuery.value = intent.query
-            }
+        viewModelScope.launch {
+            when (intent) {
+                is HomeIntent.OnSearch -> {
+                    _searchQuery.value = intent.query
+                }
 
-            is HomeIntent.OnLocationSelected -> {
-                emitEffect(HomeEffect.NavigateToDetail(intent.location))
+                is HomeIntent.OnLocationSelected -> {
+                    emitEffect(HomeEffect.NavigateToDetail(intent.location))
+                }
             }
         }
     }
